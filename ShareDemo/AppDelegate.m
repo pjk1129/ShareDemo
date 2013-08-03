@@ -3,7 +3,7 @@
 //  ShareDemo
 //
 //  Created by JK.PENG on 13-8-2.
-//  Copyright (c) 2013年 qianwang365. All rights reserved.
+//  Copyright (c) 2013年 NJUT. All rights reserved.
 //
 
 #import "AppDelegate.h"
