@@ -31,11 +31,12 @@ typedef enum {
  *	@brief	发布内容状态
  */
 typedef enum{
-	ShareContentStateBegan = 0,        /**< 开始 */
-	ShareContentStateSuccess = 1,     /**< 成功 */
-	ShareContentStateFail = 2,        /**< 失败 */
-    ShareContentStateUnInstalled = 3, /**< 未安装 */
-	ShareContentStateCancel = 4       /**< 取消 */
+	ShareContentStateBegan = 0,              /**< 开始 */
+	ShareContentStateSuccess = 1,            /**< 成功 */
+	ShareContentStateFail = 2,               /**< 失败 */
+    ShareContentStateUnInstalled = 3,        /**< 未安装 */
+	ShareContentStateCancel = 4,             /**< 取消 */
+    ShareContentStateNotSupport = 5          /**< 设备不支持 */
 }ShareContentState;
 
 #define kWeiChatAppId       @"wxd930ea5d5a258f4f"
@@ -46,7 +47,7 @@ typedef enum{
 
 typedef void (^ShareQQBlock)(ShareManager *manager, ShareContentState resultCode);
 typedef void (^ShareWeiChatBlock)(ShareManager *manager, ShareContentState resultCode);
-typedef void (^ShareSMSBlock)(ShareManager *manager);
+typedef void (^ShareSMSBlock)(ShareManager *manager, ShareContentState resultCode);
 typedef void (^ShareMailBlock)(ShareManager *manager);
 
 

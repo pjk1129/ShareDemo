@@ -316,18 +316,27 @@ static ShareManager   *shareManager;
                completionBlock:(ShareSMSBlock)aCompletionSMSBlock
                    failedBlock:(ShareSMSBlock)aFailedSMSBlock
 {
-    [self setCompletionSMSBlock:aCompletionSMSBlock];
     [self setFailedSMSBlock:aFailedSMSBlock];
     
-    MFMessageComposeViewController* controller = [[MFMessageComposeViewController alloc] init];
     if ([MFMessageComposeViewController canSendText]) {
+        MFMessageComposeViewController* controller = [[[MFMessageComposeViewController alloc] init] autorelease];
         controller.body =  content;
-        //parse through receipients        
         controller.recipients = recipients;
         controller.messageComposeDelegate = self;
         AppDelegate  *d = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         [[self presentedVC:d.window.rootViewController] presentModalViewController:controller animated:YES];
+    }else{
+        if(_failureSMSBlock){
+            _failureSMSBlock(self, ShareContentStateNotSupport);
+        }
+        
+        [_failureSMSBlock release];
+        _failureSMSBlock = nil;
+        return;
     }
+    
+    [self setCompletionSMSBlock:aCompletionSMSBlock];
+
 
 }
 
@@ -340,11 +349,11 @@ static ShareManager   *shareManager;
         
     }else if (result == MessageComposeResultSent){
         if(_completionSMSBlock){
-            _completionSMSBlock(self);
+            _failureSMSBlock(self, ShareContentStateSuccess);
         }
     }else{
         if(_failureSMSBlock){
-            _failureSMSBlock(self);
+            _failureSMSBlock(self, ShareContentStateFail);
         }
     }
     

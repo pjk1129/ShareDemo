@@ -163,11 +163,18 @@
     //recipients，接收人电话号码，可多人
     [[ShareManager sharedManager] shareViaSMSWithContent:@"加油２０１３"
                                               recipients:nil
-                                         completionBlock:^(ShareManager *manager) {
+                                         completionBlock:^(ShareManager *manager, ShareContentState resultCode) {
                                              NSLog(@"Message sent");
 
-                                         } failedBlock:^(ShareManager *manager) {
-                                             NSLog(@"Message failed");
+                                         } failedBlock:^(ShareManager *manager, ShareContentState resultCode) {
+                                             
+                                             if (resultCode == ShareContentStateNotSupport) {
+                                                 NSLog(@"======设备不具备短信功能=======");
+                                                 
+                                             }else{
+                                                 NSLog(@"Message failed");
+                                                 
+                                             }
 
                                          }];
 }
