@@ -18,5 +18,7 @@
 
 - (IBAction)shareToQQ:(id)sender;
 - (IBAction)shareToQQ1:(id)sender;
+- (IBAction)shareViaEmail:(id)sender;
+- (IBAction)shareViaSMS:(id)sender;
 
 @end

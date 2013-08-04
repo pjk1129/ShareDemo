@@ -145,4 +145,31 @@
 
 }
 
+- (IBAction)shareViaEmail:(id)sender {
+    
+    [[ShareManager sharedManager] shareViaEmailWithTitle:@"标题"
+                                                 content:@"这是一封来自钱旺的邮件"
+                                                   image:[UIImage imageNamed:@"1.jpg"]
+                                         completionBlock:^(ShareManager *manager) {
+                                             NSLog(@"Message sent");
+
+                                         } failedBlock:^(ShareManager *manager) {
+                                             NSLog(@"Message failed");
+                                        }];
+}
+
+- (IBAction)shareViaSMS:(id)sender {
+    
+    //recipients，接收人电话号码，可多人
+    [[ShareManager sharedManager] shareViaSMSWithContent:@"加油２０１３"
+                                              recipients:nil
+                                         completionBlock:^(ShareManager *manager) {
+                                             NSLog(@"Message sent");
+
+                                         } failedBlock:^(ShareManager *manager) {
+                                             NSLog(@"Message failed");
+
+                                         }];
+}
+
 @end

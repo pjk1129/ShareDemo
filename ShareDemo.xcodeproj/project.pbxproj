@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		85860E2617AE91A400B9BAE6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85860E2517AE91A400B9BAE6 /* MessageUI.framework */; };
 		85B7F1C917ACCF9A003F7EC4 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B7F1C717ACCF9A003F7EC4 /* icon.png */; };
 		85B7F1CA17ACCF9A003F7EC4 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B7F1C817ACCF9A003F7EC4 /* icon@2x.png */; };
 		85B7F1CE17ACD732003F7EC4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 85B7F1CD17ACD732003F7EC4 /* README.md */; };
@@ -37,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		85860E2517AE91A400B9BAE6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		85B7F1C717ACCF9A003F7EC4 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		85B7F1C817ACCF9A003F7EC4 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		85B7F1CD17ACD732003F7EC4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -79,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85860E2617AE91A400B9BAE6 /* MessageUI.framework in Frameworks */,
 				93D7851817AB989000519161 /* CoreTelephony.framework in Frameworks */,
 				93D7851617AB981D00519161 /* MobileCoreServices.framework in Frameworks */,
 				93D7851417AB97FE00519161 /* libsqlite3.dylib in Frameworks */,
@@ -101,6 +104,7 @@
 		93D784B217AB367400519161 = {
 			isa = PBXGroup;
 			children = (
+				85860E2517AE91A400B9BAE6 /* MessageUI.framework */,
 				93D7851717AB988F00519161 /* CoreTelephony.framework */,
 				93D7851517AB981D00519161 /* MobileCoreServices.framework */,
 				93D7851317AB97FE00519161 /* libsqlite3.dylib */,

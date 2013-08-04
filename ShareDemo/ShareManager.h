@@ -12,6 +12,7 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/TencentOAuthObject.h>
 #import "TencentOpenAPI/QQApiInterface.h"
+#import <MessageUI/MFMessageComposeViewController.h>
 
 typedef enum {
     WXSceneTypeSession   = 0,
@@ -49,7 +50,7 @@ typedef void (^ShareSMSBlock)(ShareManager *manager);
 typedef void (^ShareMailBlock)(ShareManager *manager);
 
 
-@interface ShareManager : NSObject<WXApiDelegate,TencentSessionDelegate>{
+@interface ShareManager : NSObject<WXApiDelegate,TencentSessionDelegate,MFMessageComposeViewControllerDelegate>{
 	ShareQQBlock       _completionQQBlock;
 	ShareQQBlock       _failureQQBlock;
     
@@ -74,7 +75,7 @@ typedef void (^ShareMailBlock)(ShareManager *manager);
 
 -(BOOL) handleOpenURL:(NSURL *) url;
 
-//QQ connect API
+//Share via QQ
 - (void) sendImageContentToQQ:(UIImage *)image
                         title:(NSString*)title
                   description:(NSString*)description
@@ -84,7 +85,7 @@ typedef void (^ShareMailBlock)(ShareManager *manager);
              completionBlock:(ShareQQBlock)aCompletionQQBlock
                  failedBlock:(ShareQQBlock)aFailedQQBlock;
 
-//WeiChat API
+//Share via WeiChat
 - (void) sendImageContentToWX:(UIImage *)image
                         scene:(WXSceneTypeE)sceneSession
               completionBlock:(ShareWeiChatBlock)aCompletionWXBlock
@@ -93,5 +94,19 @@ typedef void (^ShareMailBlock)(ShareManager *manager);
                        scene:(WXSceneTypeE)sceneSession
              completionBlock:(ShareWeiChatBlock)aCompletionWXBlock
                  failedBlock:(ShareWeiChatBlock)aFailedWXBlock;
+
+//Share via email
+- (void)shareViaEmailWithTitle:(NSString *)title
+                       content:(NSString *)content
+                         image:(UIImage *)image
+               completionBlock:(ShareMailBlock)aCompletionMailBlock
+                   failedBlock:(ShareMailBlock)aFailedMailBlock;
+
+//Share via SMS
+- (void)shareViaSMSWithContent:(NSString *)content
+                    recipients:(NSArray *)recipients
+               completionBlock:(ShareSMSBlock)aCompletionSMSBlock
+                   failedBlock:(ShareSMSBlock)aFailedSMSBlock;
+
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "ShareManager.h"
+#import "AppDelegate.h"
 
 static ShareManager   *shareManager;
 
@@ -84,6 +85,18 @@ static ShareManager   *shareManager;
 
 }
 
+/**
+ 获取弹出模态视图的控制器
+ @param  检索路径的根
+ @return 弹出模态视图的控制器
+ */
+- (UIViewController *)presentedVC:(UIViewController *)vc{
+    if (nil == [vc presentedViewController]) {
+        return vc;
+    }
+    
+    return [self presentedVC:[vc presentedViewController]];
+}
 
 #pragma mark - QQ connect API
 - (void) sendImageContentToQQ:(UIImage *)image
@@ -285,6 +298,60 @@ static ShareManager   *shareManager;
         _failureWXBlock = nil;
 
     }
+}
+
+#pragma mark - Mail Share
+- (void)shareViaEmailWithTitle:(NSString *)title
+                       content:(NSString *)content
+                         image:(UIImage *)image
+               completionBlock:(ShareMailBlock)aCompletionMailBlock
+                   failedBlock:(ShareMailBlock)aFailedMailBlock
+{
+    
+}
+
+#pragma mark - SMS Share
+- (void)shareViaSMSWithContent:(NSString *)content
+                    recipients:(NSArray *)recipients
+               completionBlock:(ShareSMSBlock)aCompletionSMSBlock
+                   failedBlock:(ShareSMSBlock)aFailedSMSBlock
+{
+    [self setCompletionSMSBlock:aCompletionSMSBlock];
+    [self setFailedSMSBlock:aFailedSMSBlock];
+    
+    MFMessageComposeViewController* controller = [[MFMessageComposeViewController alloc] init];
+    if ([MFMessageComposeViewController canSendText]) {
+        controller.body =  content;
+        //parse through receipients        
+        controller.recipients = recipients;
+        controller.messageComposeDelegate = self;
+        AppDelegate  *d = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [[self presentedVC:d.window.rootViewController] presentModalViewController:controller animated:YES];
+    }
+
+}
+
+#pragma mark - MFMessageComposeViewControllerDelegate
+-(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    [controller dismissModalViewControllerAnimated:YES];
+    
+    if (result == MessageComposeResultCancelled){
+        
+    }else if (result == MessageComposeResultSent){
+        if(_completionSMSBlock){
+            _completionSMSBlock(self);
+        }
+    }else{
+        if(_failureSMSBlock){
+            _failureSMSBlock(self);
+        }
+    }
+    
+    [_completionSMSBlock release];
+    _completionSMSBlock = nil;
+    [_failureSMSBlock release];
+    _failureSMSBlock = nil;
 }
 
 #pragma mark - Set ReqBlock
