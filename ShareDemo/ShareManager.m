@@ -304,10 +304,94 @@ static ShareManager   *shareManager;
 - (void)shareViaEmailWithTitle:(NSString *)title
                        content:(NSString *)content
                          image:(UIImage *)image
+                  toRecipients:(NSArray *)toRecipients
+                  ccRecipients:(NSArray *)ccRecipients
+                 bccRecipients:(NSArray *)bccRecipients
                completionBlock:(ShareMailBlock)aCompletionMailBlock
                    failedBlock:(ShareMailBlock)aFailedMailBlock
 {
+    [self setFailedMailBlock:aFailedMailBlock];
     
+    Class mailClass =(NSClassFromString(@"MFMailComposeViewController"));
+    if (!mailClass)
+    {
+        if (_failureMailBlock) {
+            _failureMailBlock(self, MailShareStateNotSupport);
+        }
+        [_failureMailBlock release];
+        _failureMailBlock = nil;
+        return;
+    }
+    if(![mailClass canSendMail])
+    {
+        if (_failureMailBlock) {
+            _failureMailBlock(self, MailShareStateUnEmail);
+        }
+        [_failureMailBlock release];
+        _failureMailBlock = nil;
+        return;
+    }
+    
+    [self setCompletionMailBlock:aCompletionMailBlock];
+    
+    MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
+    mailPicker.mailComposeDelegate = self;
+    
+    //设置主题
+    [mailPicker setSubject:title];
+    //添加收件人
+    [mailPicker setToRecipients:toRecipients];
+    //添加抄送
+    [mailPicker setCcRecipients:ccRecipients];
+    //添加密送
+    [mailPicker setBccRecipients:bccRecipients];
+    
+    // 添加一张图片
+    NSData *imageData = UIImagePNGRepresentation(image);            // png
+    //关于mimeType：http://www.iana.org/assignments/media-types/index.html
+    [mailPicker addAttachmentData: imageData mimeType: @"" fileName: @"1.png"];
+    
+    
+    NSString *emailBody = [NSString stringWithFormat:@"<font color='red'>eMail</font> %@",content];
+    [mailPicker setMessageBody:emailBody isHTML:YES];
+    AppDelegate  *d = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [[self presentedVC:d.window.rootViewController] presentModalViewController:mailPicker animated:YES];
+    [mailPicker release];
+    
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError *)error
+{
+    //关闭邮件发送窗口
+    [controller dismissModalViewControllerAnimated:YES];
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            break;
+        case MFMailComposeResultSaved:
+            break;
+        case MFMailComposeResultSent:{
+            if (_completionMailBlock) {
+                _completionMailBlock(self, MailShareStateSent);
+            }
+            break;
+        }
+        case MFMailComposeResultFailed:{
+            if (_failureMailBlock) {
+                _failureMailBlock(self, MailShareStateFailed);
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    
+    [_completionMailBlock release];
+    _completionMailBlock = nil;
+    [_failureMailBlock release];
+    _failureMailBlock = nil;
 }
 
 #pragma mark - SMS Share

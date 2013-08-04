@@ -12,7 +12,7 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/TencentOAuthObject.h>
 #import "TencentOpenAPI/QQApiInterface.h"
-#import <MessageUI/MFMessageComposeViewController.h>
+#import <MessageUI/MessageUI.h>
 
 typedef enum {
     WXSceneTypeSession   = 0,
@@ -39,6 +39,15 @@ typedef enum{
     ShareContentStateNotSupport = 5          /**< 设备不支持 */
 }ShareContentState;
 
+typedef enum  {
+    MailShareStateCancelled      = 0,
+    MailShareStateSaved          = 1,
+    MailShareStateSent           = 2,
+    MailShareStateFailed         = 3,
+    MailShareStateNotSupport     = 4,       //该系统不支持程序内邮件功能
+    MailShareStateUnEmail        = 5,       //未配置邮箱账号
+}MailShareState;
+
 #define kWeiChatAppId       @"wxd930ea5d5a258f4f"
 #define kQQConnectAppKey    @"222222"
 
@@ -48,10 +57,10 @@ typedef enum{
 typedef void (^ShareQQBlock)(ShareManager *manager, ShareContentState resultCode);
 typedef void (^ShareWeiChatBlock)(ShareManager *manager, ShareContentState resultCode);
 typedef void (^ShareSMSBlock)(ShareManager *manager, ShareContentState resultCode);
-typedef void (^ShareMailBlock)(ShareManager *manager);
+typedef void (^ShareMailBlock)(ShareManager *manager, MailShareState state);
 
 
-@interface ShareManager : NSObject<WXApiDelegate,TencentSessionDelegate,MFMessageComposeViewControllerDelegate>{
+@interface ShareManager : NSObject<WXApiDelegate,TencentSessionDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>{
 	ShareQQBlock       _completionQQBlock;
 	ShareQQBlock       _failureQQBlock;
     
@@ -100,6 +109,9 @@ typedef void (^ShareMailBlock)(ShareManager *manager);
 - (void)shareViaEmailWithTitle:(NSString *)title
                        content:(NSString *)content
                          image:(UIImage *)image
+                  toRecipients:(NSArray *)toRecipients
+                  ccRecipients:(NSArray *)ccRecipients
+                 bccRecipients:(NSArray *)bccRecipients
                completionBlock:(ShareMailBlock)aCompletionMailBlock
                    failedBlock:(ShareMailBlock)aFailedMailBlock;
 

@@ -148,14 +148,37 @@
 - (IBAction)shareViaEmail:(id)sender {
     
     [[ShareManager sharedManager] shareViaEmailWithTitle:@"标题"
-                                                 content:@"这是一封来自钱旺的邮件"
+                                                 content:@"这是一封来自XXX的邮件"
                                                    image:[UIImage imageNamed:@"1.jpg"]
-                                         completionBlock:^(ShareManager *manager) {
-                                             NSLog(@"Message sent");
+                                            toRecipients:nil
+                                            ccRecipients:nil
+                                           bccRecipients:nil
+                                         completionBlock:^(ShareManager *manager,MailShareState state) {
+                                                       NSLog(@"Message sent");
+                                                       
+                                                   } failedBlock:^(ShareManager *manager,MailShareState state) {
+                                                       
+                                                       switch (state) {
+                                                           case MailShareStateCancelled:
+                                                               break;
+                                                           case MailShareStateSaved:
+                                                               break;
+                                                           case MailShareStateSent:{
+                                                               NSLog(@"Message failed");
+                                                               break;
+                                                           }
+                                                           case MailShareStateUnEmail:
+                                                               NSLog(@"==========您还没有配置邮箱账号===========");
+                                                               break;
+                                                           case MailShareStateNotSupport:
+                                                               NSLog(@"==========您是系统不支持程序内邮件===========");
+                                                               break;
+                                                           default:
+                                                               break;
+                                                       }
+                                                   }];
 
-                                         } failedBlock:^(ShareManager *manager) {
-                                             NSLog(@"Message failed");
-                                        }];
+    
 }
 
 - (IBAction)shareViaSMS:(id)sender {
