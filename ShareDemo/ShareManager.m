@@ -12,19 +12,33 @@ static ShareManager   *shareManager;
 
 @interface ShareManager ()
 
-- (void)setCompletionReqBlock:(ShareManagerBlock)aCompletionBlock;
-- (void)setFailedReqBlock:(ShareManagerBlock)aFailedBlock;
 
-- (void)handleQQSendResult:(QQApiSendResultCode)sendResult;
+- (void)setCompletionWXBlock:(ShareWeiChatBlock)aCompletionWXBlock;
+- (void)setFailedWXBlock:(ShareWeiChatBlock)aFailedWXBlock;
+- (void)setCompletionQQBlock:(ShareQQBlock)aCompletionQQBlock;
+- (void)setFailedQQBlock:(ShareQQBlock)aFailedQQBlock;
+
+- (void)setCompletionSMSBlock:(ShareSMSBlock)aCompletionSMSBlock;
+- (void)setFailedSMSBlock:(ShareSMSBlock)aFailedSMSBlock;
+
+- (void)setCompletionMailBlock:(ShareMailBlock)aCompletionMailBlock;
+- (void)setFailedMailBlock:(ShareMailBlock)aFailedMailBlock;
 
 @end
 
 @implementation ShareManager
 @synthesize tencentOAuth = _tencentOAuth;
 
+
 - (void)dealloc{
-    _completionReqBlock = nil;
-    _failureReqBlock = nil;
+    _completionWXBlock = nil;
+    _failureWXBlock = nil;
+    _completionQQBlock = nil;
+    _failureQQBlock = nil;
+    _completionSMSBlock = nil;
+    _failureSMSBlock = nil;
+    _completionMailBlock = nil;
+    _failureMailBlock = nil;
     [_tencentOAuth release];
     [super dealloc];
 }
@@ -75,11 +89,11 @@ static ShareManager   *shareManager;
 - (void) sendImageContentToQQ:(UIImage *)image
                         title:(NSString*)title
                   description:(NSString*)description
-              completionBlock:(ShareManagerBlock)aCompletionReqBlock
-                  failedBlock:(ShareManagerBlock)aFailedReqBlock
+              completionBlock:(ShareQQBlock)aCompletionQQBlock
+                  failedBlock:(ShareQQBlock)aFailedQQBlock
 {
-    [self setCompletionReqBlock:aCompletionReqBlock];
-    [self setFailedReqBlock:aFailedReqBlock];
+    [self setCompletionQQBlock:aCompletionQQBlock];
+    [self setFailedQQBlock:aFailedQQBlock];
     
     NSData* data = UIImageJPEGRepresentation(image,0.6);    
     QQApiImageObject* img = [QQApiImageObject objectWithData:data previewImageData:data title:title description:description];
@@ -88,12 +102,13 @@ static ShareManager   *shareManager;
     QQApiSendResultCode sent = [QQApiInterface sendReq:req];
     [self handleQQSendResult:sent];
 }
+
 - (void) sendTextContentToQQ:(NSString *)text
-             completionBlock:(ShareManagerBlock)aCompletionReqBlock
-                 failedBlock:(ShareManagerBlock)aFailedReqBlock
+             completionBlock:(ShareQQBlock)aCompletionQQBlock
+                 failedBlock:(ShareQQBlock)aFailedQQBlock
 {
-    [self setCompletionReqBlock:aCompletionReqBlock];
-    [self setFailedReqBlock:aFailedReqBlock];
+    [self setCompletionQQBlock:aCompletionQQBlock];
+    [self setFailedQQBlock:aFailedQQBlock];
     
     QQApiTextObject* txtObj = [QQApiTextObject objectWithText:text];
     SendMessageToQQReq* req = [SendMessageToQQReq reqWithContent:txtObj];
@@ -107,45 +122,29 @@ static ShareManager   *shareManager;
 {
     switch (sendResult)
     {
-        case EQQAPIAPPNOTREGISTED:
-        {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"Error" message:@"App未注册" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            [msgbox release];
-            
-            break;
-        }
-        case EQQAPIMESSAGECONTENTINVALID:
-        case EQQAPIMESSAGECONTENTNULL:
-        case EQQAPIMESSAGETYPEINVALID:
-        {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"Error" message:@"发送参数错误" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            [msgbox release];
-            
+        case EQQAPISENDSUCESS:{
+            if (_completionQQBlock) {
+                _completionQQBlock(self,ShareContentStateSuccess);
+            }
             break;
         }
         case EQQAPIQQNOTINSTALLED:
         {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"Error" message:@"未安装手Q" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            [msgbox release];
-            
+            if (_failureQQBlock) {
+                _failureQQBlock(self,ShareContentStateUnInstalled);
+            }
             break;
         }
+        case EQQAPIAPPNOTREGISTED:
+        case EQQAPIMESSAGECONTENTINVALID:
+        case EQQAPIMESSAGECONTENTNULL:
+        case EQQAPIMESSAGETYPEINVALID:
         case EQQAPIQQNOTSUPPORTAPI:
-        {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"Error" message:@"API接口不支持" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            [msgbox release];
-            
-            break;
-        }
         case EQQAPISENDFAILD:
         {
-            UIAlertView *msgbox = [[UIAlertView alloc] initWithTitle:@"Error" message:@"发送失败" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil];
-            [msgbox show];
-            [msgbox release];
+            if (_failureQQBlock) {
+                _failureQQBlock(self,ShareContentStateFail);
+            }
             
             break;
         }
@@ -154,10 +153,29 @@ static ShareManager   *shareManager;
             break;
         }
     }
+    
+    [_completionQQBlock release];
+    _completionQQBlock = nil;
+    [_failureQQBlock release];
+    _failureQQBlock = nil;
+    
 }
 
 #pragma mark - QQ TencentSessionDelegate
+- (void)tencentDidLogin
+{
+    
+}
 
+- (void)tencentDidNotLogin:(BOOL)cancelled
+{
+    
+}
+
+- (void)tencentDidNotNetWork
+{
+    
+}
 
 #pragma mark - WeiChat API
 /*
@@ -178,9 +196,20 @@ static ShareManager   *shareManager;
 
 - (void) sendImageContentToWX:(UIImage *)image
                         scene:(WXSceneTypeE)sceneSession
-              completionBlock:(ShareManagerBlock)aCompletionReqBlock
-                  failedBlock:(ShareManagerBlock)aFailedReqBlock;
+              completionBlock:(ShareWeiChatBlock)aCompletionWXBlock
+                  failedBlock:(ShareWeiChatBlock)aFailedWXBlock;
 {
+    [self setFailedWXBlock:aFailedWXBlock];
+    
+    if (![WXApi isWXAppInstalled]) {
+        if(_failureWXBlock){
+            _failureWXBlock(self,ShareContentStateUnInstalled);
+        }
+        [_failureWXBlock release];
+        _failureWXBlock = nil;
+        return;
+    }
+    
     WXMediaMessage *message = [WXMediaMessage message];
     [message setThumbImage:[self getWXThumbImage:image]];
     
@@ -196,18 +225,27 @@ static ShareManager   *shareManager;
     if (sceneSession == WXSceneTypeTimeline) {
         req.scene = WXSceneTimeline;
     }
-    
-    [self setCompletionReqBlock:aCompletionReqBlock];
-    [self setFailedReqBlock:aFailedReqBlock];
+    [self setCompletionWXBlock:aCompletionWXBlock];
     
     [WXApi sendReq:req];
 }
 
 - (void) sendTextContentToWX:(NSString *)text
                        scene:(WXSceneTypeE)sceneSession
-             completionBlock:(ShareManagerBlock)aCompletionReqBlock
-                 failedBlock:(ShareManagerBlock)aFailedReqBlock
+             completionBlock:(ShareWeiChatBlock)aCompletionWXBlock
+                 failedBlock:(ShareWeiChatBlock)aFailedWXBlock
 {
+    [self setFailedWXBlock:aFailedWXBlock];
+    
+    if (![WXApi isWXAppInstalled]) {
+        if(_failureWXBlock){
+            _failureWXBlock(self,ShareContentStateUnInstalled);
+        }
+        [_failureWXBlock release];
+        _failureWXBlock = nil;
+        return;
+    }
+    
     SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init] autorelease];
     req.bText = YES;
     req.text = text;
@@ -216,8 +254,7 @@ static ShareManager   *shareManager;
     if (sceneSession == WXSceneTypeTimeline) {
         req.scene = WXSceneTimeline;
     }
-    [self setCompletionReqBlock:aCompletionReqBlock];
-    [self setFailedReqBlock:aFailedReqBlock];
+    [self setCompletionWXBlock:aCompletionWXBlock];
     
     [WXApi sendReq:req];
 }
@@ -231,51 +268,66 @@ static ShareManager   *shareManager;
 -(void) onResp:(BaseResp*)resp
 {
     if([resp isKindOfClass:[SendMessageToWXResp class]])
-    {
-        NSString *strTitle = [NSString stringWithFormat:@"发送结果"];
-        NSString *strMsg = [NSString stringWithFormat:@"发送媒体消息结果:%d", resp.errCode];
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [alert release];
-        
-        if (resp.errCode == 0) {
-            if(_completionReqBlock){
-                _completionReqBlock(self);
+    {        
+        if (resp.errCode == WXSuccess) {
+            if(_completionWXBlock){
+                _completionWXBlock(self,ShareContentStateSuccess);
             }
-            _completionReqBlock = nil;
         }else{
-            if(_failureReqBlock){
-                _failureReqBlock(self);
+            if(_failureWXBlock){
+                _failureWXBlock(self,ShareContentStateFail);
             }
-            
-            _failureReqBlock = nil;
         }
-
-    }
-    else if([resp isKindOfClass:[SendAuthResp class]])
-    {
-        NSString *strTitle = [NSString stringWithFormat:@"Auth结果"];
-        NSString *strMsg = [NSString stringWithFormat:@"Auth结果:%d", resp.errCode];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [alert release];
+        [_completionWXBlock release];
+        _completionWXBlock = nil;
+        [_failureWXBlock release];
+        _failureWXBlock = nil;
+
     }
 }
 
 #pragma mark - Set ReqBlock
-- (void)setCompletionReqBlock:(ShareManagerBlock)aCompletionBlock{
-    [_completionReqBlock release];
-	_completionReqBlock = [aCompletionBlock copy];
-    
-    
+- (void)setCompletionWXBlock:(ShareWeiChatBlock)aCompletionWXBlock{
+    [_completionWXBlock release];
+    _completionWXBlock = [aCompletionWXBlock copy];
 }
 
-- (void)setFailedReqBlock:(ShareManagerBlock)aFailedBlock{
-    [_failureReqBlock release];
-	_failureReqBlock = [aFailedBlock copy];
-    
+- (void)setFailedWXBlock:(ShareWeiChatBlock)aFailedWXBlock{
+    [_failureWXBlock release];
+    _failureWXBlock = [aFailedWXBlock copy];
 }
+
+- (void)setCompletionQQBlock:(ShareQQBlock)aCompletionQQBlock{
+    [_completionQQBlock release];
+    _completionQQBlock = [aCompletionQQBlock copy];
+}
+
+- (void)setFailedQQBlock:(ShareQQBlock)aFailedQQBlock{
+    [_failureQQBlock release];
+    _failureQQBlock = [aFailedQQBlock copy];
+}
+
+- (void)setCompletionSMSBlock:(ShareSMSBlock)aCompletionSMSBlock{
+    [_completionSMSBlock release];
+    _completionSMSBlock = [aCompletionSMSBlock copy];
+}
+
+- (void)setFailedSMSBlock:(ShareSMSBlock)aFailedSMSBlock{
+    [_failureSMSBlock release];
+    _failureSMSBlock = [aFailedSMSBlock copy];
+}
+
+
+- (void)setCompletionMailBlock:(ShareMailBlock)aCompletionMailBlock{
+    [_completionMailBlock release];
+    _completionMailBlock = [aCompletionMailBlock copy];
+}
+
+- (void)setFailedMailBlock:(ShareMailBlock)aFailedMailBlock{
+    [_failureMailBlock release];
+    _failureMailBlock = [aFailedMailBlock copy];
+}
+
 
 @end
