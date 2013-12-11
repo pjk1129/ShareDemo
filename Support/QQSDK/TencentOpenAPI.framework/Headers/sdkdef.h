@@ -426,9 +426,5 @@ typedef id TCRequiredId;
 @optional
 - (void)cgiRequest:(TCAPIRequest *)request didResponse:(APIResponse *)response;
 
-- (void)cgiRequest:(TCAPIRequest *)request didSendBodyData:(long long)bytesWritten totalBytesWritten:(long long)totalBytesWritten totalBytesExpectedToWrite:(long long)totalBytesExpectedToWrite;
-
-- (void)cgiRequest:(TCAPIRequest *)request didWriteData:(long long)bytesWritten totalBytesWritten:(long long)totalBytesWritten expectedTotalBytes:(long long) expectedTotalBytes;
-
 @end
 

@@ -202,4 +202,9 @@
                                          }];
 }
 
+- (IBAction)loginQQ:(id)sender {
+    
+    [[ShareManager sharedManager] loginQQ];
+}
+
 @end

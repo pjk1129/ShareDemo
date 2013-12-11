@@ -85,6 +85,14 @@ static ShareManager   *shareManager;
 
 }
 
+- (void)loginQQ
+{
+    NSArray *permissions = [NSArray arrayWithObjects:@"get_user_info", nil];
+//    [_tencentOAuth authorize:permissions inSafari:NO];
+    
+    [_tencentOAuth reauthorizeWithPermissions:permissions];
+}
+
 /**
  获取弹出模态视图的控制器
  @param  检索路径的根

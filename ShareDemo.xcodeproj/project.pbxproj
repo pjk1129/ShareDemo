@@ -104,15 +104,6 @@
 		93D784B217AB367400519161 = {
 			isa = PBXGroup;
 			children = (
-				85860E2517AE91A400B9BAE6 /* MessageUI.framework */,
-				93D7851717AB988F00519161 /* CoreTelephony.framework */,
-				93D7851517AB981D00519161 /* MobileCoreServices.framework */,
-				93D7851317AB97FE00519161 /* libsqlite3.dylib */,
-				93D7850C17AB978000519161 /* libstdc++.dylib */,
-				93D7850A17AB975F00519161 /* libz.1.1.3.dylib */,
-				93D7850817AB974C00519161 /* libz.dylib */,
-				93D7850217AB791300519161 /* libiconv.dylib */,
-				93D7850017AB78F200519161 /* SystemConfiguration.framework */,
 				93D784C417AB367400519161 /* ShareDemo */,
 				93D784BD17AB367400519161 /* Frameworks */,
 				93D784BC17AB367400519161 /* Products */,
@@ -130,6 +121,15 @@
 		93D784BD17AB367400519161 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85860E2517AE91A400B9BAE6 /* MessageUI.framework */,
+				93D7851717AB988F00519161 /* CoreTelephony.framework */,
+				93D7851517AB981D00519161 /* MobileCoreServices.framework */,
+				93D7851317AB97FE00519161 /* libsqlite3.dylib */,
+				93D7850C17AB978000519161 /* libstdc++.dylib */,
+				93D7850A17AB975F00519161 /* libz.1.1.3.dylib */,
+				93D7850817AB974C00519161 /* libz.dylib */,
+				93D7850217AB791300519161 /* libiconv.dylib */,
+				93D7850017AB78F200519161 /* SystemConfiguration.framework */,
 				93D784BE17AB367400519161 /* UIKit.framework */,
 				93D784C017AB367400519161 /* Foundation.framework */,
 				93D784C217AB367400519161 /* CoreGraphics.framework */,

@@ -122,4 +122,7 @@ typedef void (^ShareMailBlock)(ShareManager *manager, MailShareState state);
                    failedBlock:(ShareSMSBlock)aFailedSMSBlock;
 
 
+- (void)loginQQ;
+
+
 @end
