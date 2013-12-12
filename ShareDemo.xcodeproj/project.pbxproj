@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		85860E2617AE91A400B9BAE6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85860E2517AE91A400B9BAE6 /* MessageUI.framework */; };
+		8592CA31185946F9002E2D17 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8592CA2F185946F9002E2D17 /* TencentOpenApi_IOS_Bundle.bundle */; };
+		8592CA32185946F9002E2D17 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8592CA30185946F9002E2D17 /* TencentOpenAPI.framework */; };
 		85B7F1C917ACCF9A003F7EC4 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B7F1C717ACCF9A003F7EC4 /* icon.png */; };
 		85B7F1CA17ACCF9A003F7EC4 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B7F1C817ACCF9A003F7EC4 /* icon@2x.png */; };
 		85B7F1CE17ACD732003F7EC4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 85B7F1CD17ACD732003F7EC4 /* README.md */; };
@@ -30,8 +32,6 @@
 		93D7850917AB974C00519161 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93D7850817AB974C00519161 /* libz.dylib */; };
 		93D7850B17AB975F00519161 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93D7850A17AB975F00519161 /* libz.1.1.3.dylib */; };
 		93D7850D17AB978000519161 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93D7850C17AB978000519161 /* libstdc++.dylib */; };
-		93D7851117AB97D300519161 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 93D7850F17AB97D300519161 /* TencentOpenApi_IOS_Bundle.bundle */; };
-		93D7851217AB97D300519161 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93D7851017AB97D300519161 /* TencentOpenAPI.framework */; };
 		93D7851417AB97FE00519161 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 93D7851317AB97FE00519161 /* libsqlite3.dylib */; };
 		93D7851617AB981D00519161 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93D7851517AB981D00519161 /* MobileCoreServices.framework */; };
 		93D7851817AB989000519161 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93D7851717AB988F00519161 /* CoreTelephony.framework */; };
@@ -39,6 +39,8 @@
 
 /* Begin PBXFileReference section */
 		85860E2517AE91A400B9BAE6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		8592CA2F185946F9002E2D17 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
+		8592CA30185946F9002E2D17 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		85B7F1C717ACCF9A003F7EC4 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		85B7F1C817ACCF9A003F7EC4 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		85B7F1CD17ACD732003F7EC4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -69,8 +71,6 @@
 		93D7850817AB974C00519161 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		93D7850A17AB975F00519161 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
 		93D7850C17AB978000519161 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
-		93D7850F17AB97D300519161 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
-		93D7851017AB97D300519161 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		93D7851317AB97FE00519161 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		93D7851517AB981D00519161 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		93D7851717AB988F00519161 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -86,6 +86,7 @@
 				93D7851617AB981D00519161 /* MobileCoreServices.framework in Frameworks */,
 				93D7851417AB97FE00519161 /* libsqlite3.dylib in Frameworks */,
 				93D7850D17AB978000519161 /* libstdc++.dylib in Frameworks */,
+				8592CA32185946F9002E2D17 /* TencentOpenAPI.framework in Frameworks */,
 				93D7850B17AB975F00519161 /* libz.1.1.3.dylib in Frameworks */,
 				93D7850917AB974C00519161 /* libz.dylib in Frameworks */,
 				93D7850317AB791300519161 /* libiconv.dylib in Frameworks */,
@@ -94,7 +95,6 @@
 				93D784C117AB367400519161 /* Foundation.framework in Frameworks */,
 				93D784C317AB367400519161 /* CoreGraphics.framework in Frameworks */,
 				93D784E817AB370300519161 /* libWeChatSDK_armv7_armv7s.a in Frameworks */,
-				93D7851217AB97D300519161 /* TencentOpenAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,8 +201,8 @@
 		93D7850E17AB97C800519161 /* QQSDK */ = {
 			isa = PBXGroup;
 			children = (
-				93D7850F17AB97D300519161 /* TencentOpenApi_IOS_Bundle.bundle */,
-				93D7851017AB97D300519161 /* TencentOpenAPI.framework */,
+				8592CA2F185946F9002E2D17 /* TencentOpenApi_IOS_Bundle.bundle */,
+				8592CA30185946F9002E2D17 /* TencentOpenAPI.framework */,
 			);
 			path = QQSDK;
 			sourceTree = "<group>";
@@ -264,9 +264,9 @@
 				93D784D517AB367400519161 /* Default-568h@2x.png in Resources */,
 				93D784DB17AB367400519161 /* ViewController.xib in Resources */,
 				93D784F017AB3C5F00519161 /* 1.jpg in Resources */,
-				93D7851117AB97D300519161 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				85B7F1C917ACCF9A003F7EC4 /* icon.png in Resources */,
 				85B7F1CA17ACCF9A003F7EC4 /* icon@2x.png in Resources */,
+				8592CA31185946F9002E2D17 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				85B7F1CE17ACD732003F7EC4 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,8 +366,9 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Support\"",
-					"\"$(SRCROOT)/Support/QQSDK\"",
+					"\\\"$(SRCROOT)/Support\\\"",
+					"\\\"$(SRCROOT)/Support/QQSDK\\\"",
+					/Users/pjk1129/Documents/github/ShareDemo/Support/QQSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShareDemo/ShareDemo-Prefix.pch";
@@ -388,8 +389,9 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Support\"",
-					"\"$(SRCROOT)/Support/QQSDK\"",
+					"\\\"$(SRCROOT)/Support\\\"",
+					"\\\"$(SRCROOT)/Support/QQSDK\\\"",
+					/Users/pjk1129/Documents/github/ShareDemo/Support/QQSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShareDemo/ShareDemo-Prefix.pch";
